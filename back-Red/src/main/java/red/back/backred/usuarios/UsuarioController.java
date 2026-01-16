@@ -29,6 +29,12 @@ public class UsuarioController {
         service.desactivar(id);
     }
 
+    @PutMapping("/{id}/activar")
+    public void activar(@PathVariable Long id) {
+        service.activar(id);
+    }
+
+
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         service.eliminar(id);

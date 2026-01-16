@@ -30,6 +30,14 @@ public class UsuarioService {
         repo.save(usuario);
     }
 
+    public void activar(Long id) {
+        Usuario u = repo.findById(id)
+                .orElseThrow();
+        u.setActivo(true);
+        repo.save(u);
+    }
+
+
     public void eliminar(Long id) {
         repo.deleteById(id);
     }
