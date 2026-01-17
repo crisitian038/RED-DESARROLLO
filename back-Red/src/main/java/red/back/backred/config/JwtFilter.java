@@ -6,21 +6,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import red.back.backred.usuarios.UsuarioDetailsService;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UsuarioDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -35,16 +34,18 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
 
             if (jwtUtil.isTokenValid(token)) {
-                String email = jwtUtil.extractEmail(token);
 
-                UserDetails userDetails =
-                        userDetailsService.loadUserByUsername(email);
+                String email = jwtUtil.extractEmail(token);
+                String rol = jwtUtil.extractRol(token); // ✅ AQUÍ
+
+                List<SimpleGrantedAuthority> authorities =
+                        List.of(new SimpleGrantedAuthority("ROLE_" + rol));
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                email,
                                 null,
-                                userDetails.getAuthorities()
+                                authorities
                         );
 
                 authToken.setDetails(
