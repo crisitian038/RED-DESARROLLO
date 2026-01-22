@@ -4,8 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import red.back.backred.usuarios.Rol;
 import red.back.backred.usuarios.Usuario;
 import red.back.backred.usuarios.UsuarioRepository;
@@ -25,30 +25,42 @@ public class BackRedApplication {
 
         return args -> {
 
-            // ADMIN POR DEFECTO
-            if (repo.findByEmail("admin@admin.com").isEmpty()) {
+            // ========= ADMIN POR DEFECTO =========
+            boolean adminExiste =
+                    repo.findByEmail("admin@admin.com").isPresent();
+
+            if (!adminExiste) {
                 repo.save(
                         Usuario.builder()
-                                .nombre("Administrador")
-                                .email("admin@admin.com")
+                                .username("Administrador")
+                                .email("admin@admin.com") // ✅ corregido
                                 .password(encoder.encode("123456"))
                                 .rol(Rol.ADMIN)
                                 .activo(true)
                                 .build()
                 );
+                System.out.println("✅ Admin creado");
+            } else {
+                System.out.println("✔ Admin ya existe");
             }
 
-            // USUARIO COMÚN POR DEFECTO
-            if (repo.findByEmail("user@user.com").isEmpty()) {
+            // ========= USUARIO COMÚN POR DEFECTO =========
+            boolean userExiste =
+                    repo.findByEmail("user@user.com").isPresent();
+
+            if (!userExiste) {
                 repo.save(
                         Usuario.builder()
-                                .nombre("Usuario Prueba")
+                                .username("Usuario Prueba")
                                 .email("user@user.com")
                                 .password(encoder.encode("123456"))
-                                .rol(Rol.USUARIO)
+                                .rol(Rol.USER)
                                 .activo(true)
                                 .build()
                 );
+                System.out.println("✅ Usuario de prueba creado");
+            } else {
+                System.out.println("✔ Usuario de prueba ya existe");
             }
         };
     }

@@ -13,6 +13,10 @@ spring:
       hibernate:
         format_sql: true
 
+  sql:
+    init:
+      mode: never
+
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false

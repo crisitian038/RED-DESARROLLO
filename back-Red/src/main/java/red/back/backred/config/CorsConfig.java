@@ -16,8 +16,11 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        // Frontend permitido
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        // Frontend permitido - Agregar ambos puertos
+        config.setAllowedOrigins(List.of(
+            "http://localhost:5173",
+            "http://localhost:5174"
+        ));
 
         // Métodos permitidos
         config.setAllowedMethods(List.of(

@@ -9,4 +9,6 @@ public interface CarreraRepository extends JpaRepository<Carrera, Long> {
     List<Carrera> findByActivaTrue();
 
     List<Carrera> findTop3ByActivaTrueOrderBySolicitudesDesc();
+
+    boolean existsByNombreIgnoreCase(String nombre);
 }
