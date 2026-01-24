@@ -37,12 +37,16 @@ public class SecurityConfig {
                         // Carreras (lectura)
                         .requestMatchers(HttpMethod.GET, "/carreras/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/bachillerato").permitAll()
+
+
                         // 📰 Noticias públicas
                         .requestMatchers(HttpMethod.GET, "/api/noticias/publicadas").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/noticias/{id}").permitAll()
 
                         // Formularios públicos
                         .requestMatchers(HttpMethod.POST, "/inscripciones").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/bachillerato").permitAll()
                         .requestMatchers(HttpMethod.POST, "/contactos").permitAll()
 
                         // ===============================
@@ -55,6 +59,7 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated()
                 )
+
                 // Aquí inyectamos tu filtro personalizado antes del filtro por defecto
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
